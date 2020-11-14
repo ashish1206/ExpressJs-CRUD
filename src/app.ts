@@ -1,9 +1,8 @@
-import express, {Request, Response} from 'express';
+import { UserController } from './routes/user';
+import express from 'express';
 
 const app = express();
 
-app.get('/', (req: Request, res: Response)=>{
-    res.send('hello');
-})
+app.use('/user', new UserController().router);
 
 app.listen(3000, ()=>console.log('server started'));
