@@ -1,11 +1,16 @@
 import { PORT } from './config/constants';
-import { UserController } from './routes/user';
+import { EmployeeController } from './routes/EmployeeController';
 import express from 'express';
+import * as bodyParser from 'body-parser'
 
+//initialize variables
 const app = express();
+const employeeController = new EmployeeController();
 
-const userController = new UserController();
+//middlewares
+app.use(bodyParser.json());
 
-app.use('/user', userController.router);
+//routes
+app.use('/user', employeeController.router);
 
 app.listen(PORT, ()=>console.log('server started'));

@@ -1,7 +1,7 @@
 export const dbConfig: any = {
     user: 'postgres',
     password: 'postgres',
-    database: 'main',
+    database: 'employee',
     host: 'localhost',
     port: 5432
 };
