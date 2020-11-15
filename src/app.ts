@@ -1,8 +1,11 @@
+import { PORT } from './config/constants';
 import { UserController } from './routes/user';
 import express from 'express';
 
 const app = express();
 
-app.use('/user', new UserController().router);
+const userController = new UserController();
 
-app.listen(3000, ()=>console.log('server started'));
+app.use('/user', userController.router);
+
+app.listen(PORT, ()=>console.log('server started'));
