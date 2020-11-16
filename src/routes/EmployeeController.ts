@@ -1,6 +1,6 @@
-import { Employee } from './../model/EmployeeDto';
 import { EmployeeService } from './../service/EmployeeService';
-import {Router, Request, Response} from 'express';
+import {Router, Request, Response } from 'express';
+import Employee from '../model/EmployeeDto';
 
 export class EmployeeController {
     public router: Router = Router();
@@ -10,7 +10,8 @@ export class EmployeeController {
     }
 
     private initRoutes(): void {
-        this.router.get('/login', this.getAllEmployee);
+        this.router.get('/get-all', this.getAllEmployee);
+        this.router.post('/create', this.insertEmployee);
     }
 
     public getAllEmployee = (req: Request, res: Response): void => {
@@ -19,7 +20,20 @@ export class EmployeeController {
             res.json({employees:employees});
         })
         .catch(()=>{
+            res.statusCode = 500;
             res.send('error');
         });
+    }
+
+    public insertEmployee = (req: Request, res: Response): void => {
+        this.employeeService.insertEmployee(req)
+        .then((result: any) => {
+            res.statusCode = 200;
+            res.json({message: 'employee created'});
+        })
+        .catch(() => {
+            res.statusCode = 500;
+            res.json({message: 'error in creating employee'});
+        })
     }
 }

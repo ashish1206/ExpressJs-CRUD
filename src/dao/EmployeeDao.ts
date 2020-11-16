@@ -1,7 +1,8 @@
 import { employeeQueries } from './EmployeeDaoQueries';
-import { Employee } from './../model/EmployeeDto';
 import { Pool } from 'pg';
 import { DbConnection } from '../dbconnection';
+import { DaoError } from '../errors/DaoError';
+import Employee, { IEmployee } from '../model/EmployeeDto';
 
 export class EmployeeDao {
     private pool: Pool;
@@ -17,16 +18,40 @@ export class EmployeeDao {
         }
         catch(err){
             console.log(err);
-            throw new Error('error in fetching user');
+            throw new DaoError('Error in fetching employees details');
         }
     }
 
     private populateEmployeeDetails = async (result: any): Promise<Employee[]> => {
         let employees: Employee[] = [];
         result.rows.forEach( (row: any) => {
-            let employee: Employee = new Employee(row.emp_id, row.emp_name, row.email, row.phoneNumber, row.manager_id);
+            let emp: IEmployee = {
+                empId: row.emp_id,
+                empName: row.emp_name,
+                email: row.email,
+                password: '',
+                managerId: row.manager_id, 
+                phoneNumber: row.phone_number
+            };
+            let employee: Employee = new Employee(emp);
             employees.push(employee);
         });
         return employees;
+    }
+
+    public insertEmployee = async (employee: Employee):Promise<void> => {
+        try{
+            let params: any[] = [];
+            params.push(employee.empName);
+            params.push(employee.password);
+            params.push(employee.email);
+            params.push(employee.phoneNumber);
+            params.push(employee.managerId);
+            console.log(params, employeeQueries.insertEmployee);
+            await this.pool.query(employeeQueries.insertEmployee, params);
+        }
+        catch(err){
+            throw new DaoError('Error in creating employee');
+        }
     }
 }

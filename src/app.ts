@@ -11,6 +11,6 @@ const employeeController = new EmployeeController();
 app.use(bodyParser.json());
 
 //routes
-app.use('/user', employeeController.router);
+app.use('/employee', employeeController.router);
 
 app.listen(PORT, ()=>console.log('server started'));
