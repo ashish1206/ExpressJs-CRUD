@@ -14,15 +14,36 @@ export class EmployeeService {
         return this.employeeDao.getAllEmployee();
     }
 
-    public insertEmployee = async (req: Request): Promise<boolean> => {
+    public insertEmployee = async (req: Request): Promise<void> => {
         try{
             let employee: IEmployee = req.body.employee as Employee;
             await this.employeeDao.insertEmployee(employee);
-            return true;
         }
         catch(err){
             console.log(err);
             throw new ServiceError('Error while inserting employee');
+        }
+    }
+
+    public updateManager = async (empId: number, managerId: number): Promise<void> => {
+        try{
+            const rowCount = await this.employeeDao.updateManager(empId, managerId);
+            if(rowCount == 0){
+                throw new ServiceError('Error in updating manager');
+            }
+        }
+        catch(err){
+            throw new ServiceError('Error in updating manager');
+        }
+    }
+
+    public getEmployee = async (empId: number): Promise<Employee> => {
+        try {
+            const emp = await this.employeeDao.getEmployee(empId);
+            return emp;
+        }
+        catch(err) {
+            throw new ServiceError('Error in getting emplyee details');
         }
     }
 }
