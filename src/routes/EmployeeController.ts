@@ -16,7 +16,7 @@ export class EmployeeController {
         this.router.get('/get-employee', this.getEmployee);
     }
 
-    public getAllEmployee = (req: Request, res: Response): void => {
+    private getAllEmployee = (req: Request, res: Response): void => {
         this.employeeService.getAllEmployee()
         .then((employees: Employee[])=>{
             res.json({employees:employees});
@@ -27,7 +27,7 @@ export class EmployeeController {
         });
     }
 
-    public insertEmployee = (req: Request, res: Response): void => {
+    private insertEmployee = (req: Request, res: Response): void => {
         this.employeeService.insertEmployee(req)
         .then(() => {
             res.statusCode = 200;
@@ -39,7 +39,7 @@ export class EmployeeController {
         });
     }
 
-    public updateManager = (req: Request, res: Response): void => {
+    private updateManager = (req: Request, res: Response): void => {
         this.employeeService.updateManager(req.body.empId, req.body.managerId)
         .then(() => {
             res.statusCode = 200;
@@ -51,7 +51,7 @@ export class EmployeeController {
         });
     }
 
-    public getEmployee = (req: Request, res: Response): void => {
+    private getEmployee = (req: Request, res: Response): void => {
         this.employeeService.getEmployee(req.body.empId)
         .then((emp: Employee) => {
             res.statusCode = 200;
