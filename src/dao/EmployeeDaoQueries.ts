@@ -5,6 +5,9 @@ export const employeeQueries: any = {
     updateManager: `update public.employee set manager_id = $1 where emp_id = $2`,
     getEmployee: `select * from public.employee where emp_id = $1`,
     getEmployeesByManagerID: `select * from public.employee where manager_id = $1`,
+    getManagerByEmpId: `select * from public.employee where emp_id = 
+                        (select manager_id from public.employee where emp_id = $1)`,
+    deleteEmployee: `delete from public.employee where emp_id = $1`,
     createTask: `insert into public.task (description, create_date, update_date, status_id, details, emp_id)
                 values ($1, now()::timestamp(0), now()::timestamp(0), (select status_id from public.task_status
                 where upper(status_name) = upper($2)), $3, $4)`,

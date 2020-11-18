@@ -20,8 +20,8 @@ CREATE TABLE "task_status"(
 CREATE TABLE "task"(
 	task_id SERIAL NOT null UNIQUE,
 	description VARCHAR(100),
-	create_date date NOT null,
-	update_date date NOT NULL,
+	create_date timestamp NOT null,
+	update_date timestamp NOT NULL,
 	status_id SERIAL NOT NULL,
 	details VARCHAR(100),
 	emp_id INT NOT NULL,

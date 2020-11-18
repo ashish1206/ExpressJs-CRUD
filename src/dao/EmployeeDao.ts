@@ -1,7 +1,7 @@
+import { DaoError } from './../errors/DaoError';
 import { employeeQueries } from './EmployeeDaoQueries';
 import { Pool } from 'pg';
 import { DbConnection } from '../dbconnection';
-import { DaoError } from '../errors/DaoError';
 import Employee, { IEmployee } from '../model/EmployeeDto';
 
 export class EmployeeDao {
@@ -95,6 +95,41 @@ export class EmployeeDao {
         }
         catch(err){
             throw new DaoError('Error in populating employee details');
+        }
+    }
+
+    public getEmployeesByManagerId = async (managerId: number): Promise<Employee[]> => {
+        try{
+            const params: any[] = [managerId];
+            const result = await this.pool.query(employeeQueries.getEmployeesByManagerID, params);
+            const employeeList: Employee[] = await this.populateEmployeesDetails(result);
+            return employeeList;
+        }
+        catch(err){
+            throw new DaoError('Error in getting employees');
+        }
+    }
+
+    public getManagerByEmpId = async (empId: number):Promise<Employee> => {
+        try{
+            const params: any[] = [empId];
+            const result = await this.pool.query(employeeQueries.getManagerByEmpId, params);
+            const manager: Employee = this.populateEmployeeDetails(result);
+            return manager;
+        }
+        catch(err){
+            throw new DaoError('Error while fetching manager details');
+        }
+    }
+
+    public deleteEmployee = async (empId: number):Promise<number> => {
+        try{
+            const params: any[] = [empId];
+            const result = await this.pool.query(employeeQueries.deleteEmployee, params);
+            return result.rowCount;
+        }
+        catch(err){
+            throw new DaoError('Error while deleting employee');
         }
     }
 }
