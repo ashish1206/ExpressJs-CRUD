@@ -63,4 +63,50 @@ export class TaskDao {
             throw new DaoError('Error in updateing task');
         }
     }
+
+    public getAllTasksByEmpId = async (empId: number): Promise<Task[]> => {
+        try{
+            const params: any[] = [empId];
+            const result = await this.pool.query(employeeQueries.getAllTaskByEmp, params);
+            const tasks: Task[] = await this.populateTasks(result);
+            return tasks;
+        }
+        catch(err){
+            throw new DaoError('Error in fetching all task for emp');
+        }
+    }
+
+    private populateTasks = async (result: any): Promise<Task[]> => {
+        try{
+            let tasks: Task[] = [];
+            result.rows.forEach((row: any) => {
+                let task: ITask = {
+                    taskId: row.task_id,
+                    description: row.description,
+                    createDate: row.create_date,
+                    updateDate: row.update_date,
+                    status: row.status,
+                    details: row.details,
+                    empId: row.emp_id
+                };
+                tasks.push(task);
+            });
+            return tasks;
+        }
+        catch(err){
+            throw new DaoError('Error in populating tasks');
+        }
+    }
+
+    public getAllTaskByManager = async (managerId: number): Promise<Task[]> => {
+        try{
+            const params: any[] = [managerId];
+            const result = await this.pool.query(employeeQueries.getAllTaskByManager, params);
+            const tasks: Task[] = await this.populateTasks(result);
+            return tasks;
+        }
+        catch(err){
+            throw new DaoError('Error in fetching all task by managerId');
+        }
+    }
 }

@@ -61,4 +61,22 @@ export class TaskService {
             throw new ServiceError('Error in updating task');
         }
     }
+
+    public getAllTasksByEmpId = async (empId: number): Promise<Task[]> => {
+        try{
+            return this.taskDao.getAllTasksByEmpId(empId);
+        }
+        catch(err){
+            throw new ServiceError('Error in fetching all task for emp');
+        }
+    }
+
+    public getAllTaskByManager = async (managerId: number): Promise<Task[]> => {
+        try{
+            return this.taskDao.getAllTaskByManager(managerId);
+        }
+        catch(err){
+            throw new ServiceError('Error in fetching all task by managerId');
+        }
+    }
 }

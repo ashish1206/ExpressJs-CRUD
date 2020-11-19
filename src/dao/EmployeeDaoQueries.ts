@@ -16,7 +16,12 @@ export const employeeQueries: any = {
     getTaskDetails: `select task_tab.*, status_tab.status_name as status from
                     public.task task_tab join public.task_status status_tab on 
                     task_tab.status_id = status_tab.status_id where task_id = $1`,
-    getAllTaskByEmp: `select * from public.task where emp_id = $1`,
-    getAllTaskByManager: `select * from public.task where emp_id in (select emp_id from public.employee
-                        where manager_id = $1)`
+    getAllTaskByEmp: `select task_tab.*, status_tab.status_name as status from public.task task_tab
+                        join public.task_status status_tab on 
+                        task_tab.status_id = status_tab.status_id where emp_id = $1`,
+    getAllTaskByManager: `select task_tab.*, status_tab.status_name as status from public.task task_tab
+                            join public.task_status status_tab on 
+                            task_tab.status_id = status_tab.status_id 
+                            where emp_id in (select emp_id from public.employee
+                            where manager_id = $1)`
 }
